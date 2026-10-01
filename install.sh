@@ -21,6 +21,9 @@ skill_src="$here/plugins/djass/skills/djass"
 if [ "$want_cli" = 1 ]; then
   if command -v djass >/dev/null 2>&1; then
     echo "djass already installed: $(djass version)"
+  elif command -v brew >/dev/null 2>&1; then
+    echo "installing the djass CLI with Homebrew..."
+    brew install LVTD-LLC/tap/djass
   elif command -v curl >/dev/null 2>&1; then
     echo "installing the djass CLI from https://djass.dev/downloads/cli/install.sh ..."
     curl -fsSL https://djass.dev/downloads/cli/install.sh | sh

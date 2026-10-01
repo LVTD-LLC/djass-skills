@@ -157,10 +157,13 @@ def main() -> int:
     check(skill.startswith(f"---\nname: {NAME}\ndescription: "), "SKILL.md: frontmatter must start with name then description")
     check(f'version: "{version}"' in skill, "SKILL.md: metadata.version differs from plugin manifests")
     check("TODO" not in skill, "SKILL.md: contains TODO")
-    check(len(skill.splitlines()) <= 200, "SKILL.md: keep it under 200 lines")
+    check(len(skill.splitlines()) <= 230, "SKILL.md: keep it under 230 lines")
+    check(skill.index("## 1. Ask about the tech stack first") < skill.index("## 2. Credentials") < skill.index("## 7. Generate"),
+          "SKILL.md: the tech-stack interview must come before credentials and generation")
     for tool in MCP_TOOLS:
         check(f"`{tool}`" in skill, f"SKILL.md: must mention MCP tool {tool}")
-    for phrase in ("djass generate", "djass options", "/project-options", "use_mcp", "Never infer optional flags"):
+    for phrase in ("djass generate", "djass options", "/project-options", "use_mcp", "Never infer optional flags",
+                   "## 1. Ask about the tech stack first", "brew install LVTD-LLC/tap/djass"):
         check(phrase in skill, f"SKILL.md: must mention {phrase!r}")
     check((skill_dir / "agents/openai.yaml").is_file(), "skill: agents/openai.yaml missing")
     for reference in ("cli.md", "api.md", "generator-options.md"):

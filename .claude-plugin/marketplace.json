@@ -8,7 +8,7 @@
       "name": "djass",
       "source": "./plugins/djass",
       "description": "Generate a Django SaaS repository with Djass: pick options with the user, queue generation, and land the repo in the workspace.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": { "name": "LVTD LLC" },
       "homepage": "https://djass.dev",
       "repository": "https://github.com/LVTD-LLC/djass-skills",

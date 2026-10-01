@@ -4,11 +4,19 @@ The `djass` binary wraps every Projects API v1 operation and prints JSON on stdo
 
 ## Install
 
+Homebrew, macOS or Linux (preferred; `brew upgrade djass` updates it):
+
+```bash
+brew install LVTD-LLC/tap/djass
+```
+
+Official installer, any Unix with curl:
+
 ```bash
 curl -fsSL https://djass.dev/downloads/cli/install.sh | sh
 ```
 
-- Installs a checksum-verified release into `~/.local/bin`; set `DJASS_INSTALL_DIR` to change that.
+- The installer puts a checksum-verified release into `~/.local/bin`; set `DJASS_INSTALL_DIR` to change that.
 - Windows archives and manual downloads: https://djass.dev/downloads/cli/latest/
 - `djass version` prints the installed version.
 

@@ -1,17 +1,19 @@
 ---
 name: djass
-description: Generate a production-ready Django SaaS repository with Djass (built on django-saas-starter) and put it in the current workspace. Use when the user wants to start a new Django project, SaaS, or web app, scaffold a Django codebase, says "use Djass", mentions django-saas-starter, wants a generated project ZIP, or asks about a queued Djass project. Covers the djass CLI, the hosted Djass MCP tools, the Projects API fallback, choosing generator options, and first steps in the generated repo.
+description: Generate a production-ready Django SaaS repository with Djass (built on django-saas-starter) and put it in the current workspace. Use when the user wants to start a new Django project, SaaS, or web app, scaffold a Django codebase, says "use Djass", mentions django-saas-starter, wants a generated project ZIP, or asks about a queued Djass project. Covers asking about the tech stack before choosing anything, the djass CLI, the hosted Djass MCP tools, the Projects API fallback, generator options, and first steps in the generated repo.
 license: MIT
 compatibility: Needs a Djass account and API key exported as DJASS_API_KEY. The CLI path needs a shell with curl; the MCP path needs the hosted Djass MCP connection that this plugin bundles.
 metadata:
   author: LVTD-LLC
-  version: "0.1.0"
+  version: "0.2.0"
   homepage: https://djass.dev
 ---
 
 # Djass: generate a Django SaaS repository
 
-Djass renders `django-saas-starter` with the options the user picks, zips the result, and serves it. Your job: settle the options with the user, queue one generation, wait for it, and unpack the repo into an empty directory. Generation usually finishes within a few minutes; the CLI waits up to 10 minutes by default.
+Djass renders `django-saas-starter` with the options the user picks, zips the result, and serves it. Your job: find out what stack the user needs, settle the options with them, queue one generation, wait for it, and unpack the repo into an empty directory. Generation usually finishes within a few minutes; the CLI waits up to 10 minutes by default.
+
+Do not assume anything about the stack from the app idea. The first thing you do, before installing or calling anything, is step 1.
 
 Three ways to reach Djass. Use the first that fits:
 
@@ -23,7 +25,39 @@ Three ways to reach Djass. Use the first that fits:
 
 All three take the same API key and the same option names.
 
-## 1. Credentials
+## 1. Ask about the tech stack first
+
+Before credentials, options, or tools, ask the user what they need. Open with the fixed parts of every Djass project so they can say no early:
+
+- Django 6 on Python 3.14, PostgreSQL, Redis, Django Q2 background workers.
+- Server-rendered templates with Tailwind CSS, HTMX, and Alpine.js (no SPA framework).
+- django-allauth auth with passkeys and MFA, Django Ninja API, Docker Compose, deploy configs for CapRover, Render, and Fly.io.
+
+If they need something Djass does not do (React or another SPA, MySQL, a different web framework, a mobile backend only), say so plainly and stop; do not generate a project they will throw away.
+
+Then ask, in one message, about every area a generator option covers, and record the answer for each:
+
+| Ask about | Maps to |
+|---|---|
+| Payments or subscriptions | `use_stripe` |
+| Product analytics | `use_posthog` |
+| Error monitoring | `use_sentry` |
+| Uptime or scheduled-job pings | `use_healthchecks` |
+| Admin notifications (chat, push, email fan-out) | `use_apprise` |
+| Transactional email templates | `use_mjml` |
+| Customer support chat | `use_chatwoot` |
+| Media or file storage on S3-compatible buckets | `use_s3` |
+| Vector search or embeddings | `use_qdrant` |
+| LLM features in the app | `use_ai` |
+| An MCP server inside the generated app | `use_mcp` |
+| A blog, docs pages | `generate_blog`, `generate_docs` |
+| Keyboard shortcuts in the UI | `use_keyboard_shortcuts` |
+| GitHub Actions CI | `use_ci` |
+| Deploy target: CapRover (always included), DigitalOcean App Platform | `use_digitalocean` |
+
+Ask as plain questions ("Will you take payments?"), not as flag names. If the user does not know yet, say what the default is and ask whether to keep it. "Use the defaults" or "keep it minimal" are complete answers. Do not fill gaps yourself.
+
+## 2. Credentials
 
 Djass needs an API key from https://djass.dev/settings. An Agent API key has every scope; a scoped project key needs `projects:create` and `projects:read`.
 
@@ -38,15 +72,21 @@ Check presence without printing the value:
 
 If it is missing, ask the user to export it in the environment that launches their agent and restart the session. Never print the key, pass it as a command argument, put it in a URL, or write it into any file in the repo.
 
-## 2. Install the CLI (shell path)
+## 3. Install the CLI (shell path)
 
 ```bash
-djass version >/dev/null 2>&1 || curl -fsSL https://djass.dev/downloads/cli/install.sh | sh
+djass version >/dev/null 2>&1 || brew install LVTD-LLC/tap/djass
 ```
 
-This installs a checksum-verified binary into `~/.local/bin` (`DJASS_INSTALL_DIR` overrides). Make sure that directory is on `PATH`. Windows archives are under https://djass.dev/downloads/cli/latest/.
+Homebrew (macOS or Linux) is the preferred install; `brew upgrade djass` keeps it current. Without Homebrew, the official installer puts a checksum-verified binary into `~/.local/bin` (`DJASS_INSTALL_DIR` overrides; make sure it is on `PATH`):
 
-## 3. Discover the current options
+```bash
+curl -fsSL https://djass.dev/downloads/cli/install.sh | sh
+```
+
+Windows archives are under https://djass.dev/downloads/cli/latest/.
+
+## 4. Discover the current options
 
 Never hard-code the option list; it changes when the template changes.
 
@@ -58,7 +98,7 @@ or call the `get_generator_options` MCP tool, or `GET https://djass.dev/api/v1/p
 
 The response has `defaults` (every field with its default) and `groups` (feature flags with labels and descriptions, by category). [references/generator-options.md](references/generator-options.md) explains what each flag adds to the generated repo.
 
-## 4. Collect the project fields
+## 5. Collect the project fields
 
 Ask for whatever the user has not already given you:
 
@@ -69,15 +109,15 @@ Ask for whatever the user has not already given you:
 - `project_main_color`: a Tailwind color name; default `green`.
 - `caprover_app_name`: defaults to the slug with hyphens; only matters for CapRover deploys.
 
-## 5. Confirm every feature flag with the user
+## 6. Confirm every feature flag with the user
 
-This is the step agents get wrong. Do not pick optional integrations from the app idea. Show the user the flags grouped the way the catalog groups them (monitoring, CX, commerce, storage, UX, content, AI, delivery) with their defaults, and ask which to enable. "Use the defaults" is a valid answer and counts as confirmation. Record the final `y` or `n` for every flag before you generate.
+Turn the answers from step 1 into a proposed `y` or `n` for every flag in the live catalog, show that list grouped the way the catalog groups it (monitoring, CX, commerce, storage, UX, content, AI, delivery) with the default next to each, and ask the user to confirm or change it. Any flag the catalog has that step 1 did not cover gets asked about now. Never infer optional flags from the app idea; "use the defaults" counts as confirmation only for the flags the user has seen.
 
 `use_mcp` means "put MCP server scaffolding inside the generated project". It has nothing to do with the Djass MCP connection you may be using right now.
 
 Keep the first generation conservative: only what the user will wire up in the next few weeks.
 
-## 6. Generate
+## 7. Generate
 
 ### CLI (preferred when you have a shell)
 
@@ -101,7 +141,7 @@ Pass every confirmed flag with `--set key=y` or `--set key=n`; unspecified flags
 
 Only when neither the CLI nor MCP works. `POST /projects`, then `GET /projects/{id}/status`, then `GET /projects/{id}/download`, all with `X-API-Key`. Contract and error shapes: [references/api.md](references/api.md).
 
-## 7. After generation
+## 8. After generation
 
 1. Read `djass-manifest.json` and `project-metadata.json` at the repo root. They record the options used, the template version, and checksums.
 2. Read the generated `README.md` and `AGENTS.md`, then follow their setup steps (env file, local stack, migrations). Do not invent setup steps the generated repo does not document.
@@ -111,7 +151,7 @@ Only when neither the CLI nor MCP works. `POST /projects`, then `GET /projects/{
 
 - One generation per confirmed spec. Creating projects is not idempotent; calling `create_project` again makes a duplicate.
 - Never overwrite an existing directory. Pick a new `--output` or ask.
-- Never infer optional flags and never silently flip a default.
+- Never infer optional flags and never silently flip a default. The stack questions in step 1 come before any tool call.
 - Never expose the API key: no echo, no logs, no commits, no URL query strings.
 - Flag values are the strings `"y"` and `"n"`, not booleans.
 - Unknown option keys fail validation. Use only keys from the live catalog.
@@ -130,4 +170,4 @@ The API and the CLI share one error shape: `{"error": {"code", "category", "mess
 
 ## When to stop and ask
 
-Ask the user, not the API, when `DJASS_API_KEY` is missing, the slug is ambiguous, any flag is unconfirmed, the destination directory is not empty, or a generation fails with a message you cannot act on.
+Ask the user, not the API, when the stack questions in step 1 are unanswered, `DJASS_API_KEY` is missing, the slug is ambiguous, any flag is unconfirmed, the destination directory is not empty, or a generation fails with a message you cannot act on.

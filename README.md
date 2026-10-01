@@ -6,7 +6,9 @@ Djass generates production-ready Django SaaS repositories from [`django-saas-sta
 
 - the `djass` skill (`plugins/djass/skills/djass/SKILL.md`) with CLI, API, and option references;
 - the hosted Djass MCP connection (`https://djass.dev/mcp`, authenticated with your `DJASS_API_KEY`);
-- instructions for installing the `djass` CLI, which the skill prefers because it downloads and safely extracts the repo in one command.
+- instructions for installing the `djass` CLI (`brew install LVTD-LLC/tap/djass`), which the skill prefers because it downloads and safely extracts the repo in one command.
+
+The skill starts by asking what tech stack the project needs (payments, analytics, email, storage, AI, deploy target, and so on) and tells the user what is fixed in every Djass project, before it discovers options or calls any tool. It never infers optional integrations from the app idea.
 
 | Format | Manifest | Read by |
 |---|---|---|
@@ -28,7 +30,7 @@ The CLI, the MCP connection, and the API all read this one variable. GUI clients
 
 ## If you are an AI agent
 
-1. Install this plugin into your harness using the matching section below, or run `./install.sh` from a clone of this repo, which installs the `djass` CLI and links the skill into `~/.agents/skills/` and `~/.claude/skills/`.
+1. Install this plugin into your harness using the matching section below, or run `./install.sh` from a clone of this repo, which installs the `djass` CLI (Homebrew when available) and links the skill into `~/.agents/skills/` and `~/.claude/skills/`.
 2. Make sure `DJASS_API_KEY` is set. Check with `[ -n "$DJASS_API_KEY" ]`; never print it. Ask the user if it is missing.
 3. Read [`plugins/djass/skills/djass/SKILL.md`](plugins/djass/skills/djass/SKILL.md) and follow it.
 
@@ -88,6 +90,14 @@ or, for one project only, copy `plugins/djass/skills/djass` to `<project>/.agent
 
 Anything that implements [Agent Skills](https://agentskills.io) can use `plugins/djass/skills/djass/`. Copy or symlink that directory to wherever the agent looks for skills; `~/.agents/skills/djass` is the emerging convention. The skill works without MCP: it installs and drives the `djass` CLI.
 
+## The `djass` CLI
+
+```bash
+brew install LVTD-LLC/tap/djass
+```
+
+The formula lives in [LVTD-LLC/homebrew-tap](https://github.com/LVTD-LLC/homebrew-tap) and ships prebuilt macOS and Linux binaries. Without Homebrew, `curl -fsSL https://djass.dev/downloads/cli/install.sh | sh` installs the same release into `~/.local/bin`. The skill installs it on demand if it is missing.
+
 ## Try it
 
 > Use Djass to generate a new Django SaaS project for an invoicing tool for freelancers. Walk me through the generator options before you create anything.
@@ -96,7 +106,7 @@ Anything that implements [Agent Skills](https://agentskills.io) can use `plugins
 
 > Check the status of Djass project 123 and download it into ./invoicer when it is ready.
 
-The agent will stop and ask before enabling optional integrations such as payments, analytics, storage, support chat, AI, CI, or deployment targets. Saying "use the defaults" is a complete answer.
+The agent first asks what stack you need and tells you what every Djass project includes (Django, Postgres, Redis, Tailwind, HTMX, Alpine, allauth, Docker). It then confirms every optional integration such as payments, analytics, storage, support chat, AI, CI, or deployment targets before generating. Saying "use the defaults" is a complete answer.
 
 ## Bundled MCP tools
 
