@@ -1,0 +1,5 @@
+# Merge into ~/.codex/config.toml only if you are NOT using the Codex plugin
+# (the plugin already bundles this connection).
+[mcp_servers.djass]
+url = "https://djass.dev/mcp"
+bearer_token_env_var = "DJASS_API_KEY"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Djass"
+  short_description: "Generate a production-ready Django SaaS repo"
+  default_prompt: "Use $djass to generate a new Django SaaS project for my app idea."

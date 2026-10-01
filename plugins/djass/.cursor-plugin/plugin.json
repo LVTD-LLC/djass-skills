@@ -1,0 +1,23 @@
+{
+  "name": "djass",
+  "version": "0.1.0",
+  "description": "Generate a Django SaaS repository with Djass: pick options with the user, queue generation, and land the repo in the workspace.",
+  "author": { "name": "LVTD LLC", "url": "https://lvtd.dev" },
+  "homepage": "https://djass.dev",
+  "repository": "https://github.com/LVTD-LLC/djass-skills",
+  "license": "MIT",
+  "keywords": ["django", "saas", "cookiecutter", "project-generator", "scaffolding", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "DJASS_API_KEY": {
+        "type": "string",
+        "title": "Djass API key",
+        "description": "Copy your Agent API key from https://djass.dev/settings. Needs projects:create and projects:read."
+      }
+    },
+    "required": ["DJASS_API_KEY"]
+  }
+}

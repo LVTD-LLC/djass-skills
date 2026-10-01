@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "djass": {
+      "type": "http",
+      "url": "https://djass.dev/mcp",
+      "bearer_token_env_var": "DJASS_API_KEY"
+    }
+  }
+}

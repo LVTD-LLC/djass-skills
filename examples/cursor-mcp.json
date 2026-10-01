@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "djass": {
+      "url": "https://djass.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:DJASS_API_KEY}"
+      }
+    }
+  }
+}

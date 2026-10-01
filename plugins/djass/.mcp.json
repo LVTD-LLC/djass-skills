@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "djass": {
+      "type": "http",
+      "url": "https://djass.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer ${DJASS_API_KEY}"
+      }
+    }
+  }
+}

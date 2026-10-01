@@ -1,0 +1,12 @@
+{
+  "name": "djass-skills",
+  "description": "Official Djass plugin: generate production-ready Django SaaS repositories from your coding agent.",
+  "owner": { "name": "LVTD LLC", "url": "https://lvtd.dev" },
+  "plugins": [
+    {
+      "name": "djass",
+      "source": "./plugins/djass",
+      "description": "Generate a Django SaaS repository with Djass: pick options with the user, queue generation, and land the repo in the workspace."
+    }
+  ]
+}

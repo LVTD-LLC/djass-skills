@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "djass",
+  "version": "0.1.0",
+  "description": "Generate a Django SaaS repository with Djass: pick options with the user, queue generation, and land the repo in the workspace.",
+  "author": { "name": "LVTD LLC", "url": "https://lvtd.dev" },
+  "homepage": "https://djass.dev",
+  "repository": "https://github.com/LVTD-LLC/djass-skills",
+  "license": "MIT",
+  "keywords": ["django", "saas", "cookiecutter", "project-generator", "scaffolding", "mcp"]
+}

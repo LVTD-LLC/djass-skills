@@ -1,0 +1,19 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "djass-api-key",
+      "description": "Djass API key (from https://djass.dev/settings)",
+      "password": true
+    }
+  ],
+  "servers": {
+    "djass": {
+      "type": "http",
+      "url": "https://djass.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer ${input:djass-api-key}"
+      }
+    }
+  }
+}

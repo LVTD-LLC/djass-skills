@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "djass": {
+      "type": "remote",
+      "url": "https://djass.dev/mcp",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {env:DJASS_API_KEY}"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "djass",
+  "version": "0.1.0",
+  "description": "Generate a Django SaaS repository with Djass: pick options with the user, queue generation, and land the repo in the workspace.",
+  "author": { "name": "LVTD LLC", "url": "https://lvtd.dev" },
+  "homepage": "https://djass.dev",
+  "repository": "https://github.com/LVTD-LLC/djass-skills",
+  "license": "MIT",
+  "keywords": ["django", "saas", "cookiecutter", "project-generator", "scaffolding", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Djass",
+    "shortDescription": "Generate a production-ready Django SaaS repo.",
+    "longDescription": "Djass renders django-saas-starter with the options you choose (analytics, payments, storage, AI, docs, CI, deployment) and hands back a complete repository. The plugin bundles the Djass skill and the hosted Djass MCP connection, and teaches the agent to use the djass CLI so the generated repo lands directly in your workspace.",
+    "developerName": "LVTD LLC",
+    "category": "Coding",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://djass.dev",
+    "privacyPolicyURL": "https://djass.dev/privacy-policy",
+    "termsOfServiceURL": "https://djass.dev/terms-of-service",
+    "composerIcon": "./assets/djass-logo.svg",
+    "logo": "./assets/djass-logo.svg",
+    "defaultPrompt": [
+      "Use Djass to generate a new Django SaaS project for this idea.",
+      "Show me the Djass generator options and help me choose.",
+      "Check the status of my Djass project and download it when ready."
+    ]
+  }
+}
